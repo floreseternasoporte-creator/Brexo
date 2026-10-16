@@ -5480,6 +5480,7 @@ document.addEventListener("DOMContentLoaded", function() {
 #desktop-sidebar .dsb-item[aria-label="Guardados"],
 #desktop-sidebar .dsb-publish,
 #desktop-sidebar .drp-search{display:none!important;}
+#desktop-rightpanel .drp-card{display:none!important;} /* BREXO: sin promo de Play de Drex */
 </style>
 </head>
 
@@ -33402,6 +33403,7 @@ document.getElementById('backToPasswordFromRecovery').addEventListener('click', 
   const DREX_PLAY_STORE_URL = 'https://play.google.com/apps/testing/com.drex.app';
   function maybeShowPlayStoreBanner() {
     try {
+      if (window.BREXO_MODE) return; // BREXO: sin banner de la Play Store de Drex
       if (!DREX_PLAY_BANNER_ENABLED || !DREX_PLAY_STORE_URL) return;
       if (localStorage.getItem('drex_play_banner_dismissed') === '1') return;
       const b = document.getElementById('play-store-banner');
