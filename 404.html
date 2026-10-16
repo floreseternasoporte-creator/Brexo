@@ -30,13 +30,13 @@
   <meta property="og:locale" content="es_ES" />
   <meta property="og:title" content="Brexo — Mensajería" />
   <meta property="og:description" content="Publica, vota, comenta y conecta. Únete a Drex." />
-  <meta property="og:image" content="https://floreseternasoporte-creator.github.io/Beabo/drex-logo.png" />
+  <meta property="og:image" content="https://floreseternasoporte-creator.github.io/Brexo/brexo-logo.png" />
   <meta property="og:url" content="https://floreseternasoporte-creator.github.io/Beabo/" />
   <link rel="canonical" href="https://floreseternasoporte-creator.github.io/Beabo/" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Drex — la red social donde tus votos deciden" />
   <meta name="twitter:description" content="Publica, vota, comenta y conecta. Únete a Drex." />
-  <meta name="twitter:image" content="https://floreseternasoporte-creator.github.io/Beabo/drex-logo.png" />
+  <meta name="twitter:image" content="https://floreseternasoporte-creator.github.io/Brexo/brexo-logo.png" />
     <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
   <!-- Tailwind CSS CDN -->
@@ -5486,6 +5486,11 @@ document.addEventListener("DOMContentLoaded", function() {
 /* BREXO limpieza v2: ocultar entradas a secciones eliminadas */
 #drex-snap-tray{display:none!important;} /* Destellos */
 button[onclick="openPulsoView()"]{display:none!important;} /* Pulso */
+/* BREXO: contacto estilo Messenger — sin lo social del perfil */
+#follow-button{display:none!important;}
+#author-profile-tabs{display:none!important;}
+#author-profile-posts-list,#author-profile-replies-list,#author-profile-media-grid,#author-profile-ecos-list{display:none!important;}
+button[onclick="openFollowersModal()"],button[onclick="openFollowingModal()"]{display:none!important;}
 /* BREXO: filas de la Configuración nueva */
 .bx-row{display:flex;align-items:center;gap:14px;width:100%;padding:13px 16px;text-align:left;transition:opacity .15s}
 .bx-row:active{opacity:.65}
@@ -5771,9 +5776,9 @@ try {
         <div class="drex-auth-brand-logo">Brexo</div>
         <p class="drex-auth-brand-tagline">Tus conversaciones, en un solo lugar.</p>
         <ul class="drex-auth-brand-feats">
-          <li><span class="drex-auth-feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.75l6 6 9-13.5"/></svg></span>Publica fotos, videos y votaciones</li>
-          <li><span class="drex-auth-feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.75l6 6 9-13.5"/></svg></span>Vota y haz eco de lo que te gusta</li>
-          <li><span class="drex-auth-feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.75l6 6 9-13.5"/></svg></span>Conecta con personas de todo el mundo</li>
+          <li><span class="drex-auth-feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.75l6 6 9-13.5"/></svg></span>Chats y grupos con tu cuenta de Drex</li>
+          <li><span class="drex-auth-feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.75l6 6 9-13.5"/></svg></span>Fotos, notas de voz y archivos</li>
+          <li><span class="drex-auth-feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.75l6 6 9-13.5"/></svg></span>Tus conversaciones, en un solo lugar</li>
         </ul>
       </div>
       <p class="drex-auth-brand-foot">© 2026 Brexo</p>
@@ -5811,7 +5816,7 @@ try {
       </div>
       <!-- Título centrado -->
       <div class="flex-1 flex flex-col items-center justify-center text-center">
-        <div class="w-52 h-52 mb-1 flex items-center justify-center bg-transparent" style="background: transparent;"><img loading="lazy" src="assets/img/bienvenido.png" alt="Bienvenido a Drex" class="w-full h-full object-contain" style="background: transparent; border: 0; box-shadow: none; outline: none; display: block;"></div>
+        <div class="w-52 h-52 mb-1 flex items-center justify-center bg-transparent" style="background: transparent;"><img loading="lazy" src="brexo-logo.png" alt="Bienvenido a Brexo" class="w-full h-full object-contain" style="background: transparent; border: 0; box-shadow: none; outline: none; display: block;"></div>
         <h2 class="text-3xl font-bold mb-2" style="color:var(--theme-text);">Bienvenido de vuelta</h2>
         <p class="text-sm mb-0" style="color:var(--theme-muted);">Entra con tu correo o tu cuenta de Facebook</p>
       </div>
@@ -6294,7 +6299,7 @@ try {
         <div class="w-24 h-24 rounded-full flex items-center justify-center mb-6 shadow-lg" style="background:linear-gradient(135deg,#24324c,#8fa2c7);">
           <svg class="w-12 h-12" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <h2 class="text-3xl font-bold mb-2" style="color:var(--theme-text);">¡Bienvenido a Drex!</h2>
+        <h2 class="text-3xl font-bold mb-2" style="color:var(--theme-text);">¡Bienvenido a Brexo!</h2>
         <p class="text-base mb-1" style="color:var(--theme-muted);">Tu cuenta ha sido creada con éxito.</p>
         <p class="text-sm mb-10" style="color:#8fa2c7;">Un par de pasos más para empezar.</p>
         <button id="regGoToHome" type="button" onclick="startOnboarding()" class="w-full max-w-xs p-4 font-bold rounded-full transition text-white shadow-lg mb-3" style="background:#2F33B8;">
@@ -49548,9 +49553,9 @@ body.theme-dark #continueWithPhone:hover {
       <div class="drex-auth-brand-logo">Brexo</div>
       <p class="drex-auth-brand-tagline">Tus conversaciones, en un solo lugar.</p>
       <ul class="drex-auth-brand-feats">
-        <li><span class="drex-auth-feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.75l6 6 9-13.5"/></svg></span>Publica fotos, videos y votaciones</li>
-        <li><span class="drex-auth-feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.75l6 6 9-13.5"/></svg></span>Vota y haz eco de lo que te gusta</li>
-        <li><span class="drex-auth-feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.75l6 6 9-13.5"/></svg></span>Conecta con personas de todo el mundo</li>
+        <li><span class="drex-auth-feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.75l6 6 9-13.5"/></svg></span>Chats y grupos con tu cuenta de Drex</li>
+        <li><span class="drex-auth-feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.75l6 6 9-13.5"/></svg></span>Fotos, notas de voz y archivos</li>
+        <li><span class="drex-auth-feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.75l6 6 9-13.5"/></svg></span>Tus conversaciones, en un solo lugar</li>
       </ul>
     </div>
     <p class="drex-auth-brand-foot">© 2026 Brexo</p>
@@ -54137,7 +54142,7 @@ async function endFiesta() {
      limpia cachés, pide al SW que se actualice y navega con ?drexv= para
      romper la llave de caché HTTP/SW y garantizar HTML fresco.
    REGLA DE DEPLOY: regenerar version.json con el mismo sello en cada publish. */
-window.DREX_BUILD = '2026-10-16T18:51:31Z'; // BREXO
+window.DREX_BUILD = '2026-10-16T19:07:26Z'; // BREXO
 (function () {
   'use strict';
   var BUILD = window.DREX_BUILD || '';
@@ -56961,7 +56966,7 @@ function announceMusicOnDiscord(t) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         username: 'Drex Music',
-        avatar_url: 'https://floreseternasoporte-creator.github.io/Beabo/drex-logo.png',
+        avatar_url: 'https://floreseternasoporte-creator.github.io/Brexo/brexo-logo.png',
         embeds: [embed]
       }),
       keepalive: true
@@ -89951,7 +89956,7 @@ window.openOrbitPaywall = openOrbitPaywall;
 <button onclick="openSubpageView('privacidad')" class="bx-row"><span class="flex-1 min-w-0"><span class="block text-[16px] text-[var(--theme-text)]">Política de privacidad</span></span><svg class="w-5 h-5 text-[var(--theme-muted)] shrink-0 ml-auto" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
 </div>
 <button onclick="signOutUser()" class="w-full mt-6 p-4 rounded-2xl bg-[var(--theme-surface)] border border-[var(--theme-border)] text-center text-[16px] font-bold text-red-500 active:opacity-70 transition">Cerrar sesión</button>
-<p class="text-center text-[12px] text-[var(--theme-muted)] mt-6 font-semibold">Brexo · con tu cuenta de Drex</p>
+<p class="text-center text-[12px] text-[var(--theme-muted)] mt-6 font-semibold">Brexo · con tu cuenta de Drex</p><p id="brexo-build-tag" class="text-center text-[10px] text-[var(--theme-muted)] mt-1 opacity-60"></p>
 </div></div>
 <script>
 /* BREXO: Configuración nueva estilo Messenger. */
@@ -89981,6 +89986,7 @@ function closeBrexoSettings(){
 try {
   window.openBrexoSettings = openBrexoSettings;
   window.closeBrexoSettings = closeBrexoSettings;
+  try { var _bt = document.getElementById('brexo-build-tag'); if (_bt && window.DREX_BUILD) _bt.textContent = 'v' + window.DREX_BUILD; } catch (_) {}
   window.openProfile = function(){ openBrexoSettings(); };
 } catch (_) {}
 </script>
@@ -90042,6 +90048,8 @@ try {
   } else {
     try { brexoSyncTabbar(); } catch (_) {}
   }
+  // Respaldo: por si algún cambio de vista no dispara el observer.
+  try { setInterval(function(){ try { brexoSyncTabbar(); } catch (_) {} }, 1500); } catch (_) {}
 } catch (_) {}
 </script>
 </body>
