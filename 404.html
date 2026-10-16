@@ -5484,6 +5484,11 @@ document.addEventListener("DOMContentLoaded", function() {
 /* BREXO limpieza v2: ocultar entradas a secciones eliminadas */
 #drex-snap-tray{display:none!important;} /* Destellos */
 button[onclick="openPulsoView()"]{display:none!important;} /* Pulso */
+/* BREXO: filas de la Configuración nueva */
+.bx-row{display:flex;align-items:center;gap:14px;width:100%;padding:13px 16px;text-align:left;transition:opacity .15s}
+.bx-row:active{opacity:.65}
+.bx-ico{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--theme-surface-muted);color:var(--drex-brand);flex-shrink:0}
+.bx-sec{padding:22px 8px 6px;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--theme-muted)}
 .tab-button[data-tab="music"]{display:none!important;} /* pestaña música en perfil */
 #orbit-settings-card{display:none!important;} /* tarjeta Orbit en ajustes */
 </style>
@@ -52304,7 +52309,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const DREX_ROUTES = [
   { path: 'cache',        view: 'cache-config-view', open: () => window.openCacheConfigView && window.openCacheConfigView(), close: () => window.closeCacheConfigView && window.closeCacheConfigView() },
   { path: 'chat',         view: 'chat-inbox-view',   also: ['chat-room-view', 'new-chat-view'], open: () => window.openChatInboxView && window.openChatInboxView(),    close: () => { const el = document.getElementById('chat-inbox-view'); if (el) el.classList.add('hidden'); } },
-  { path: 'perfil',       view: 'profile-view',      open: () => window.openProfile && window.openProfile(),                close: () => { const el = document.getElementById('profile-view'); if (el) el.classList.add('hidden'); } },
+  { path: 'perfil',       view: 'brexo-settings-view', open: () => window.openBrexoSettings && window.openBrexoSettings(),   close: () => { const el = document.getElementById('brexo-settings-view'); if (el) el.classList.add('hidden'); } },
   { path: 'ajustes',      view: 'settings-view',     open: () => window.openProfileSettings && window.openProfileSettings(), close: () => window.closeSettingsView && window.closeSettingsView() },
   { path: 'u/:username',   view: 'author-profile-modal', open: (q) => { if (typeof openAuthorProfileByUsername === 'function') openAuthorProfileByUsername(q.username, { skipHistory: true }); }, close: () => { try { closeAuthorProfile(); } catch (_) {} } },
   { path: 'privacidad',   view: 'privacy-view',      open: () => openSubpageView('privacidad', { skipHistory: true }),      close: () => closeSubpageView() },
@@ -89855,7 +89860,8 @@ window.openOrbitPaywall = openOrbitPaywall;
     'openCreatorHub','openPulsoView','openSavedPostsView','openDraftsView','openHistorialView',
     'openFollowRequestsView','openPostPermalink','openCommentsView','openGroupPostsView',
     'openOrbitView','openPaymentsView','openScreenTimeView','openNotifications',
-    'openNoteModal','openNoteCreationFullscreen','openHashtagSearch','loadNotes'
+    'openNoteModal','openNoteCreationFullscreen','openHashtagSearch','loadNotes',
+    'drexHalloweenOnLogin'
   ];
   KILL.forEach(function(name){
     try {
@@ -89903,6 +89909,78 @@ window.openOrbitPaywall = openOrbitPaywall;
     }
   } catch (_) {}
 })();
+</script>
+<!-- BREXO: Configuracion nueva, estilo Messenger. -->
+<div id="brexo-settings-view" class="fixed inset-0 bg-[var(--theme-bg)] text-[var(--theme-text)] overflow-y-auto hidden z-[80]" style="overscroll-behavior:contain">
+<div class="max-w-3xl mx-auto min-h-full px-4 pt-4 pb-16">
+<div class="sticky top-0 z-10 bg-[var(--theme-bg)] pb-2 -mx-4 px-4"><div class="flex items-center gap-1 py-2">
+<button onclick="closeBrexoSettings()" class="tap44 w-10 h-10 flex items-center justify-center rounded-full active:bg-[var(--theme-surface-subtle)] transition" aria-label="Volver"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg></button>
+<h2 class="text-[22px] font-extrabold tracking-tight">Configuración</h2>
+</div></div>
+<button onclick="openEditProfile()" class="w-full flex items-center gap-4 p-4 rounded-2xl bg-[var(--theme-surface)] border border-[var(--theme-border)] active:opacity-70 transition text-left mt-2">
+<img id="brexo-settings-avatar" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iI2RjZTFlNSIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iMzgiIHI9IjE3IiBmaWxsPSIjYTdiNGJmIi8+PHBhdGggZD0iTTE4IDg0YzctMTcgMTktMjUgMzItMjVzMjUgOCAzMiAyNSIgZmlsbD0iI2E3YjRiZiIvPjwvc3ZnPg==" class="w-16 h-16 rounded-full object-cover shrink-0" alt="Mi foto">
+<span class="flex-1 min-w-0"><span id="brexo-settings-name" class="block text-[18px] font-bold truncate">···</span><span id="brexo-settings-username" class="block text-[14px] text-[var(--theme-muted)] truncate">@···</span></span><svg class="w-5 h-5 text-[var(--theme-muted)] shrink-0 ml-auto" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+</button>
+<p class="bx-sec">Mensajes</p><div class="rounded-2xl bg-[var(--theme-surface)] border border-[var(--theme-border)] overflow-hidden">
+<button onclick="openChatPrivacySettings()" class="bx-row"><span class="flex-1 min-w-0"><span class="block text-[16px] text-[var(--theme-text)]">Privacidad de mensajes</span><span class="block text-[13px] text-[var(--theme-muted)] mt-0.5">Confirmaciones de lectura y borradores</span></span><svg class="w-5 h-5 text-[var(--theme-muted)] shrink-0 ml-auto" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
+<div class="h-px bg-[var(--theme-border)] ml-[68px]"></div>
+<button onclick="openMutedChatsView()" class="bx-row"><span class="flex-1 min-w-0"><span class="block text-[16px] text-[var(--theme-text)]">Chats silenciados</span></span><svg class="w-5 h-5 text-[var(--theme-muted)] shrink-0 ml-auto" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
+<div class="h-px bg-[var(--theme-border)] ml-[68px]"></div>
+<button onclick="openBlockedAccountsView()" class="bx-row"><span class="flex-1 min-w-0"><span class="block text-[16px] text-[var(--theme-text)]">Bloqueados</span></span><svg class="w-5 h-5 text-[var(--theme-muted)] shrink-0 ml-auto" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
+</div>
+<p class="bx-sec">Notificaciones</p><div class="rounded-2xl bg-[var(--theme-surface)] border border-[var(--theme-border)] overflow-hidden">
+<button onclick="openNotificationSettings()" class="bx-row"><span class="flex-1 min-w-0"><span class="block text-[16px] text-[var(--theme-text)]">Notificaciones y sonidos</span></span><svg class="w-5 h-5 text-[var(--theme-muted)] shrink-0 ml-auto" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
+</div>
+<p class="bx-sec">Apariencia</p><div class="rounded-2xl bg-[var(--theme-surface)] border border-[var(--theme-border)] overflow-hidden">
+<button onclick="openThemeConfig()" class="bx-row"><span class="flex-1 min-w-0"><span class="block text-[16px] text-[var(--theme-text)]">Tema</span><span class="block text-[13px] text-[var(--theme-muted)] mt-0.5">Claro / oscuro</span></span><svg class="w-5 h-5 text-[var(--theme-muted)] shrink-0 ml-auto" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
+<div class="h-px bg-[var(--theme-border)] ml-[68px]"></div>
+<button onclick="openAppLanguageSettings()" class="bx-row"><span class="flex-1 min-w-0"><span class="block text-[16px] text-[var(--theme-text)]">Idioma</span></span><svg class="w-5 h-5 text-[var(--theme-muted)] shrink-0 ml-auto" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
+</div>
+<p class="bx-sec">Cuenta y seguridad</p><div class="rounded-2xl bg-[var(--theme-surface)] border border-[var(--theme-border)] overflow-hidden">
+<button onclick="openAccountConfig()" class="bx-row"><span class="flex-1 min-w-0"><span class="block text-[16px] text-[var(--theme-text)]">Cuenta</span><span class="block text-[13px] text-[var(--theme-muted)] mt-0.5">Usuario, correo y acceso</span></span><svg class="w-5 h-5 text-[var(--theme-muted)] shrink-0 ml-auto" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
+<div class="h-px bg-[var(--theme-border)] ml-[68px]"></div>
+<button onclick="openSecurityCenter()" class="bx-row"><span class="flex-1 min-w-0"><span class="block text-[16px] text-[var(--theme-text)]">Centro de seguridad</span><span class="block text-[13px] text-[var(--theme-muted)] mt-0.5">Verificación en dos pasos y sesiones</span></span><svg class="w-5 h-5 text-[var(--theme-muted)] shrink-0 ml-auto" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
+</div>
+<p class="bx-sec">Ayuda</p><div class="rounded-2xl bg-[var(--theme-surface)] border border-[var(--theme-border)] overflow-hidden">
+<button onclick="openSupportModal()" class="bx-row"><span class="flex-1 min-w-0"><span class="block text-[16px] text-[var(--theme-text)]">Ayuda</span></span><svg class="w-5 h-5 text-[var(--theme-muted)] shrink-0 ml-auto" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
+<div class="h-px bg-[var(--theme-border)] ml-[68px]"></div>
+<button onclick="openSubpageView('terminos')" class="bx-row"><span class="flex-1 min-w-0"><span class="block text-[16px] text-[var(--theme-text)]">Términos de servicio</span></span><svg class="w-5 h-5 text-[var(--theme-muted)] shrink-0 ml-auto" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
+<div class="h-px bg-[var(--theme-border)] ml-[68px]"></div>
+<button onclick="openSubpageView('privacidad')" class="bx-row"><span class="flex-1 min-w-0"><span class="block text-[16px] text-[var(--theme-text)]">Política de privacidad</span></span><svg class="w-5 h-5 text-[var(--theme-muted)] shrink-0 ml-auto" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></button>
+</div>
+<button onclick="signOutUser()" class="w-full mt-6 p-4 rounded-2xl bg-[var(--theme-surface)] border border-[var(--theme-border)] text-center text-[16px] font-bold text-red-500 active:opacity-70 transition">Cerrar sesión</button>
+<p class="text-center text-[12px] text-[var(--theme-muted)] mt-6 font-semibold">Brexo · con tu cuenta de Drex</p>
+</div></div>
+<script>
+/* BREXO: Configuración nueva estilo Messenger. */
+function openBrexoSettings(){
+  var v = document.getElementById('brexo-settings-view');
+  if (!v) return;
+  v.classList.remove('hidden');
+  try {
+    var u = (typeof DrexCloud !== 'undefined' && DrexCloud.auth) ? DrexCloud.auth().currentUser : null;
+    if (u) {
+      DrexCloud.database().ref('users/' + u.uid).once('value').then(function(snap){
+        var d = snap.val() || {};
+        var av = document.getElementById('brexo-settings-avatar');
+        if (av && d.profileImage) av.src = d.profileImage;
+        var nm = document.getElementById('brexo-settings-name');
+        if (nm) nm.textContent = d.username || d.name || 'Tú';
+        var un = document.getElementById('brexo-settings-username');
+        if (un) un.textContent = '@' + (d.username || 'usuario');
+      }).catch(function(){});
+    }
+  } catch (_) {}
+}
+function closeBrexoSettings(){
+  var v = document.getElementById('brexo-settings-view');
+  if (v) v.classList.add('hidden');
+}
+try {
+  window.openBrexoSettings = openBrexoSettings;
+  window.closeBrexoSettings = closeBrexoSettings;
+  window.openProfile = function(){ openBrexoSettings(); };
+} catch (_) {}
 </script>
 </body>
 </html>
