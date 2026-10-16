@@ -5481,6 +5481,11 @@ document.addEventListener("DOMContentLoaded", function() {
 #desktop-sidebar .dsb-publish,
 #desktop-sidebar .drp-search{display:none!important;}
 #desktop-rightpanel .drp-card{display:none!important;} /* BREXO: sin promo de Play de Drex */
+/* BREXO limpieza v2: ocultar entradas a secciones eliminadas */
+#drex-snap-tray{display:none!important;} /* Destellos */
+button[onclick="openPulsoView()"]{display:none!important;} /* Pulso */
+.tab-button[data-tab="music"]{display:none!important;} /* pestaña música en perfil */
+#orbit-settings-card{display:none!important;} /* tarjeta Orbit en ajustes */
 </style>
 </head>
 
@@ -52297,31 +52302,11 @@ document.addEventListener('DOMContentLoaded', () => {
 //    El observador no puede reconstruir sus parámetros desde la visibilidad,
 //    así que cada abridor las empuja con drexPushDynamicRoute().
 const DREX_ROUTES = [
-  { path: 'musica',       view: 'music-view',        open: () => window.openMusicSection && window.openMusicSection(),      close: () => window.closeMusicSection && window.closeMusicSection() },
-  { path: 'musica/reproductor', view: 'music-player-view', dyn: true, open: () => { if (window.openMusicSection) window.openMusicSection(); if (window.openMusicPlayerFull) window.openMusicPlayerFull(); }, close: () => { try { window.minimizeMusicPlayer && window.minimizeMusicPlayer(); } catch (_) {} } },
-  { path: 'musica/subir', view: 'music-upload-view', dyn: true, open: () => { if (window.openMusicSection) window.openMusicSection(); if (window.openMusicUpload) window.openMusicUpload(); }, close: () => { try { window.closeMusicUpload && window.closeMusicUpload(); } catch (_) {} } },
-  { path: 'musica/lista/:id', view: 'music-playlist-view', open: (q) => { if (window.openMusicSection) window.openMusicSection(); if (window.musicOpenPlaylist) window.musicOpenPlaylist(q.id); }, close: () => { try { window.musicClosePlaylist && window.musicClosePlaylist(); } catch (_) {} } },
-  { path: 'musica/artista/:uid', view: 'music-artist-view', open: (q) => { if (window.musicOpenArtistProfile) window.musicOpenArtistProfile(q.uid); }, close: () => { try { window.musicCloseArtistProfile && window.musicCloseArtistProfile(); } catch (_) {} } },
-  { path: 'dormir',       view: 'sleepmode-view',    open: () => openSubpageView('sleep-mode', { skipHistory: true }),       close: () => closeSubpageView() },
   { path: 'cache',        view: 'cache-config-view', open: () => window.openCacheConfigView && window.openCacheConfigView(), close: () => window.closeCacheConfigView && window.closeCacheConfigView() },
   { path: 'chat',         view: 'chat-inbox-view',   also: ['chat-room-view', 'new-chat-view'], open: () => window.openChatInboxView && window.openChatInboxView(),    close: () => { const el = document.getElementById('chat-inbox-view'); if (el) el.classList.add('hidden'); } },
   { path: 'perfil',       view: 'profile-view',      open: () => window.openProfile && window.openProfile(),                close: () => { const el = document.getElementById('profile-view'); if (el) el.classList.add('hidden'); } },
-  { path: 'envivo', view: 'envivo-view', also: ['fiesta-room-view'], open: () => window.openEnVivoSection && window.openEnVivoSection(), close: () => window.closeEnVivoSection && window.closeEnVivoSection() },
   { path: 'ajustes',      view: 'settings-view',     open: () => window.openProfileSettings && window.openProfileSettings(), close: () => window.closeSettingsView && window.closeSettingsView() },
-  { path: 'buscar',       view: 'search-view',       open: () => window.openSearchView && window.openSearchView(),          close: () => window.closeSearch && window.closeSearch() },
-  { path: 'ondas',        view: 'ondas-view',        open: () => window.openOndasView && window.openOndasView(),            close: () => window.closeOndasView && window.closeOndasView() },
-  { path: 'baro',         view: 'baro-view',         open: () => window.baroOpenView && window.baroOpenView(),              close: () => window.baroCloseView && window.baroCloseView() },
-  { path: 'hub',          view: 'creator-hub-view',  open: () => { if (typeof openCreatorHub === 'function') openCreatorHub(); },        close: () => { try { closeCreatorHub(); } catch (_) {} } },
-  { path: 'pulso',        view: 'pulso-view',        open: () => window.openPulsoView && window.openPulsoView(),            close: () => window.closePulsoView && window.closePulsoView() },
-  { path: 'guardados',    view: 'saved-posts-view',  open: () => { if (typeof openSavedPostsView === 'function') openSavedPostsView(); },  close: () => { try { closeSavedPostsView(); } catch (_) {} } },
-  { path: 'borradores',   view: 'drafts-list-view',  open: () => { if (typeof openDraftsView === 'function') openDraftsView(); },          close: () => { try { closeDraftsView(); } catch (_) {} } },
-  { path: 'historial',    view: 'historial-view',     open: () => { if (typeof openHistorialView === 'function') openHistorialView(); },    close: () => { try { closeHistorialView(); } catch (_) {} } },
-  { path: 'solicitudes',  view: 'follow-requests-view', open: () => { if (typeof openFollowRequestsView === 'function') openFollowRequestsView(); }, close: () => { try { closeFollowRequestsView(); } catch (_) {} } },
-  { path: 'post/:id',     view: 'post-permalink-view', open: (q) => { if (typeof openPostPermalink === 'function') openPostPermalink(q.id, { skipHistory: true }); }, close: () => { try { closePostPermalink({ skipHistory: true }); } catch (_) {} } },
-  { path: 'post/:id/comentarios', view: 'comments-view', open: (q) => { if (typeof openCommentsView === 'function') openCommentsView(q.id); }, close: () => { try { closeCommentsView(); } catch (_) {} } },
   { path: 'u/:username',   view: 'author-profile-modal', open: (q) => { if (typeof openAuthorProfileByUsername === 'function') openAuthorProfileByUsername(q.username, { skipHistory: true }); }, close: () => { try { closeAuthorProfile(); } catch (_) {} } },
-  { path: 'grupo/:id',    view: 'group-posts-view',  open: (q) => { if (typeof openGroupPostsView === 'function') openGroupPostsView(q.id); }, close: () => { try { closeGroupPostsView(); } catch (_) {} } },
-  { path: 'empresa',      view: 'empresa-view',      open: () => openSubpageView('empresa', { skipHistory: true }),          close: () => closeSubpageView() },
   { path: 'privacidad',   view: 'privacy-view',      open: () => openSubpageView('privacidad', { skipHistory: true }),      close: () => closeSubpageView() },
   { path: 'terminos',     view: 'terms-view',        open: () => openSubpageView('terminos', { skipHistory: true }),         close: () => closeSubpageView() },
   { path: 'borrar-cuenta', view: 'deleteacct-view',  open: () => openSubpageView('borrar-cuenta', { skipHistory: true }),     close: () => closeSubpageView() },
@@ -89857,6 +89842,66 @@ window.openOrbitPaywall = openOrbitPaywall;
   }
   if (document.readyState === 'complete') setTimeout(brexoAutoEnter, 1500);
   else window.addEventListener('load', function(){ setTimeout(brexoAutoEnter, 1500); });
+})();
+</script>
+<script>
+/* BREXO limpieza v2: las secciones no-mensajería están desactivadas.
+   Sus funciones abridoras no hacen nada; el código sigue intacto. */
+(function(){
+  if (!window.BREXO_MODE) return;
+  var KILL = [
+    'openMusicSection','openMusicUpload','openMusicPlayerFull','musicOpenPlaylist','musicOpenArtistProfile',
+    'openEnVivoSection','openSearchView','openOndasView','baroOpenView',
+    'openCreatorHub','openPulsoView','openSavedPostsView','openDraftsView','openHistorialView',
+    'openFollowRequestsView','openPostPermalink','openCommentsView','openGroupPostsView',
+    'openOrbitView','openPaymentsView','openScreenTimeView','openNotifications',
+    'openNoteModal','openNoteCreationFullscreen','openHashtagSearch','loadNotes'
+  ];
+  KILL.forEach(function(name){
+    try {
+      var orig = window[name];
+      if (typeof orig !== 'function') return;
+      window[name] = function(){ return undefined; };
+    } catch (_) {}
+  });
+  // Subpáginas: bloquear solo 'empresa' y 'sleep-mode' (privacidad/términos/borrar-cuenta se quedan).
+  try {
+    var _osp = window.openSubpageView;
+    if (typeof _osp === 'function') {
+      window.openSubpageView = function(name, opts){
+        if (name === 'empresa' || name === 'sleep-mode') return undefined;
+        return _osp.apply(this, arguments);
+      };
+    }
+  } catch (_) {}
+  // Ajustes: ocultar filas no-mensajería (con sus divisores) al abrir.
+  function brexoCleanSettings(){
+    try {
+      var v = document.getElementById('settings-view');
+      if (!v) return;
+      ['openOrbitView()','openPaymentsView()','openScreenTimeView()',
+       'openCommentPermissionView()','openHiddenWordsView()','openMentionPermissionView()'
+      ].forEach(function(oc){
+        v.querySelectorAll('button[onclick="' + oc + '"]').forEach(function(b){
+          var n = b.nextElementSibling;
+          if (n && n.tagName === 'DIV' && n.className.indexOf('h-px') >= 0) n.style.display = 'none';
+          var pv = b.previousElementSibling;
+          if (pv && pv.tagName === 'DIV' && pv.className.indexOf('h-px') >= 0) pv.style.display = 'none';
+          b.style.display = 'none';
+        });
+      });
+    } catch (_) {}
+  }
+  try {
+    var _ops2 = window.openProfileSettings;
+    if (typeof _ops2 === 'function') {
+      window.openProfileSettings = function(){
+        var r = _ops2.apply(this, arguments);
+        setTimeout(brexoCleanSettings, 60);
+        return r;
+      };
+    }
+  } catch (_) {}
 })();
 </script>
 </body>
